@@ -1,3 +1,4 @@
+from multiprocessing import context
 import numpy as np 
 
 
@@ -19,6 +20,7 @@ for i in sentences:
 
 print(sentences_token)
 
+#  this is frequency map for words in corpus
 for i in range(len(sentences_token)):
     for j in range(len(sentences_token[i])):
         if sentences_token[i][j] in hashmap:
@@ -28,7 +30,7 @@ for i in range(len(sentences_token)):
 
 print(hashmap)
 
-
+# this to map the word to id
 vocal = len(hashmap.keys())
 counter = 0
 
@@ -73,9 +75,47 @@ center_word = sentence[center_index]
 
 print("center word",center_word)
 
+# this is where we are planning to implement skip-gram training pairs
+
+# window_size = 2
+
+# start = max(0, center_index-window_size)
+# end = min(len(sentences), center_index+window_size+1)
+
+# for context_index in range(start,end):
+
+#     if context_index == center_index:
+#         pass
+
+#     context_index = sentences[context_index]
+
+#     print(context_index)
+
+training_pairs = []
 window_size = 2
 
-start = max(0, center_index-window_size)
-end = min()
+for sentence in sentences_token:
+
+    for center_index in range(len(sentence)):
+
+        start = max(0, center_index - window_size )
+        end = min(len(sentence), center_index + window_size + 1)
+
+        center_word = sentence[center_index]
+
+        for context_index in range(start,end):
+
+            if context_index == center_index:
+                pass
+            
+
+            context_word = sentence[context_index]
+
+            center_id = word_to_id_mapping[center_word]
+            current_id = word_to_id_mapping[context_word]
+
+            training_pairs.append((center_id, current_id))
+
+print(len(training_pairs))
 
 
